@@ -16,9 +16,6 @@ class DogController extends Controller{
     ];
  
     public function index(){
-
-      Log::info(config('cors.allowedOrigins')[0]);
-
   
         $Dogs  = Dog::all();
   

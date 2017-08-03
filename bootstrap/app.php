@@ -102,8 +102,4 @@ $app->configure('database');
 
 $app->register(Barryvdh\Cors\ServiceProvider::class);
 
-
-echo config('cors.allowedOrigins')[0];
-
-
 return $app;
