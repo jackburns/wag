@@ -59,9 +59,9 @@ $app->singleton(
 |
 */
 
-// $app->middleware([
-//    App\Http\Middleware\ExampleMiddleware::class
-// ]);
+$app->middleware([
+    Barryvdh\Cors\HandleCors::class,
+]);
 
 // $app->routeMiddleware([
 //     'auth' => App\Http\Middleware\Authenticate::class,
@@ -96,5 +96,13 @@ $app->singleton(
 $app->group(['namespace' => 'App\Http\Controllers'], function ($app) {
     require __DIR__.'/../routes/web.php';
 });
+
+$app->configure('cors');
+
+$app->register(Barryvdh\Cors\ServiceProvider::class);
+
+
+echo config('cors.allowedOrigins')[0];
+
 
 return $app;

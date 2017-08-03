@@ -1,7 +1,9 @@
 <?php
   
 namespace App\Http\Controllers;
-  
+
+use Log;
+
 use App\Dog;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -9,11 +11,14 @@ use Illuminate\Http\Request;
   
 class DogController extends Controller{
 
-    public $dogNameValidationRules = [
+    private $dogNameValidationRules = [
         'name' => 'required|unique:dogs|min:4',
     ];
  
     public function index(){
+
+      Log::info(config('cors.allowedOrigins')[0]);
+
   
         $Dogs  = Dog::all();
   
@@ -21,7 +26,7 @@ class DogController extends Controller{
   
     }
   
-    public function getBook($id){
+    public function getDog($id){
   
         $Dog  = Dog::find($id);
   
@@ -29,7 +34,7 @@ class DogController extends Controller{
     }
   
     public function createDog(Request $request){        
-        $this->validate($request, $dogNameValidationRules);
+        $this->validate($request, $this->dogNameValidationRules);
 
         $Dog = Dog::create($request->all());
   
@@ -47,7 +52,7 @@ class DogController extends Controller{
     public function updateDog(Request $request, $id){
         $Dog = Dog::findOrFail($id);
 
-        $this->validate($request, $dogNameValidationRules);
+        $this->validate($request, $this->dogNameValidationRules);
 
         $Dog->name = $request->input('name');
         $Dog->save();
