@@ -1,0 +1,14 @@
+{
+    "name": "raptiq/wag",
+    "description": "wag challenge api",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Jack Burns",
+            "email": "jack@raptiq.com"
+        }
+    ],
+    "require": {
+        "laravel/lumen-installer": "^1.0"
+    }
+}
