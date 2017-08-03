@@ -8,8 +8,8 @@ $password = $url["pass"];
 $database = substr($url["path"], 1);
 
 return [ 
+    'default' => 'mysql',
     'connections' => [
-        'default' => 'mysql',
         'mysql' => [
             'driver'    => 'mysql',
             'host'      => $host,
