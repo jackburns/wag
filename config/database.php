@@ -9,6 +9,7 @@ $database = substr($url["path"], 1);
 
 return [ 
     'connections' => [
+        'default' => 'mysql',
         'mysql' => [
             'driver'    => 'mysql',
             'host'      => $host,
