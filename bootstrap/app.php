@@ -98,6 +98,7 @@ $app->group(['namespace' => 'App\Http\Controllers'], function ($app) {
 });
 
 $app->configure('cors');
+$app->configure('database');
 
 $app->register(Barryvdh\Cors\ServiceProvider::class);
 
