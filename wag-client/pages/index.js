@@ -15,21 +15,31 @@ export default class extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      dogs: this.props.dogs,
       wishlistItems: []
     };
   }
 
-  addDog(newDog) {
+  async addDog(newDog) {
     let formData = new FormData();
     formData.append("name", newDog.name);
-    fetch("https://wagchallenge.herokuapp.com/api/dogs", {method: "POST", mode: 'cors', body: formData});
-    console.log("adding new dog: " + newDog.name);
+    const res = await fetch("https://wagchallenge.herokuapp.com/api/dogs", {method: "POST", mode: 'cors', body: formData});
+    const data = await res.json();
+    const newDogs = [...this.state.dogs, data].sort((a, b) => {
+        let dogA = a.name.toLowerCase();
+        let dogB = b.name.toLowerCase();
+        return (dogA < dogB) ? -1 : (dogA > dogB) ? 1 : 0;
+      });
+
+    this.setState({
+      ...this.state,
+      dogs: newDogs
+    })
   }
 
   onAdd(newValue) {
-    console.log(newValue);
     if (this.state.wishlistItems.indexOf(newValue.name) < 0) {
-      if (!newValue.null) {
+      if (!newValue.null && newValue.length > 3) {
         this.addDog(newValue);
       }
 
@@ -65,7 +75,7 @@ export default class extends React.Component {
           <div>
             <Selector
               onAdd={this.onAdd.bind(this)}
-              values={this.props.dogs}
+              values={this.state.dogs}
               blacklistValues={this.state.wishlistItems}
               placeholder="Search for dog breeds"
             />
