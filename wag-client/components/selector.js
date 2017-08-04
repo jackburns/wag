@@ -30,10 +30,11 @@ export default class Selector extends React.Component {
     this.setState({ input: "" });
   };
 
+  // filters out blacklist items and if the current input is an item
   getAutoCompleteList = () => {
     const filtered = this.props.values.filter(
       value =>
-        this.props.blacklistValues.indexOf(value) < 0 &&
+        this.props.blacklistValues.indexOf(value.name) < 0 &&
         value.name.toLowerCase().indexOf(this.state.input.toLowerCase()) !== -1
     );
 

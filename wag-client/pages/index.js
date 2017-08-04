@@ -6,6 +6,7 @@ import Selector from "../components/selector";
 import Head from "next/head";
 
 export default class extends React.Component {
+  // next.js will load intial props serverside, we can then pass props into state if they need to be modified
   static async getInitialProps({ req }) {
     const res = await fetch("https://wagchallenge.herokuapp.com/api/dogs");
     const data = await res.json();
@@ -23,23 +24,31 @@ export default class extends React.Component {
   async addDog(newDog) {
     let formData = new FormData();
     formData.append("name", newDog.name);
-    const res = await fetch("https://wagchallenge.herokuapp.com/api/dogs", {method: "POST", mode: 'cors', body: formData});
+    const res = await fetch("https://wagchallenge.herokuapp.com/api/dogs", {
+      method: "POST",
+      mode: "cors",
+      body: formData
+    });
     const data = await res.json();
-    const newDogs = [...this.state.dogs, data].sort((a, b) => {
-        let dogA = a.name.toLowerCase();
-        let dogB = b.name.toLowerCase();
-        return (dogA < dogB) ? -1 : (dogA > dogB) ? 1 : 0;
-      });
+    // Keep dogs sorted alphabetically
+    let newDogs = [...this.state.dogs, data];
+    newDogs = newDogs.sort((a, b) => {
+      let dogA = a.name.toLowerCase();
+      let dogB = b.name.toLowerCase();
+      return dogA < dogB ? -1 : dogA > dogB ? 1 : 0;
+    });
 
     this.setState({
       ...this.state,
-      dogs: newDogs
-    })
+      dogs: [...newDogs]
+    });
   }
 
   onAdd(newValue) {
+    // make sure dog isn't already in wishlist
     if (this.state.wishlistItems.indexOf(newValue.name) < 0) {
-      if (!newValue.null && newValue.length > 3) {
+      // post new dog if it wasn't in original list and meets name requirements
+      if (!newValue.id && newValue.name.length > 3) {
         this.addDog(newValue);
       }
 
