@@ -17,7 +17,7 @@ class DogController extends Controller{
  
     public function index(){
   
-        $Dogs  = Dog::all();
+        $Dogs  = Dog::orderBy('name', 'desc')->get();
   
         return response()->json($Dogs);
   
